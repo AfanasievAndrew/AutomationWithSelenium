@@ -1,84 +1,87 @@
-import Enums.Gender;
-import Enums.InsuredData;
-import Enums.PersonalData;
-import Pages.MainMenu;
-import Pages.TravelInsurance;
-import Pages.TravelShopping;
+import enums.Gender;
+import enums.InsuredData;
+import enums.PersonalData;
+import steps.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ru.yandex.qatools.allure.annotations.Title;
+
 import java.util.Set;
 
-public class SberbankInsuranceTest extends BaseTest{
+public class SberbankInsuranceTest extends BaseSteps {
+
+    MainSteps mainSteps = new MainSteps();
+    TravelShoppingSteps travelShoppingSteps = new TravelShoppingSteps();
+    TISelectPolicySteps tISelectPolicySteps = new TISelectPolicySteps();
+    TIRegistrationSteps tIRegistrationSteps= new TIRegistrationSteps();
 
     @Before
-    public void BeforeTest(){
-        Driver.get(Properties.getProperty("app.url"));
+    public void beforeTest(){
+        driver.get(properties.getProperty("app.url"));
 
-        Driver.manage().window().maximize();
+        driver.manage().window().maximize();
     }
 
     @After
-    public void AfterTest(){
-        Set<String> windowsSet = Driver.getWindowHandles();
+    public void afterTest(){
+        Set<String> windowsSet = driver.getWindowHandles();
 
         for (String tab:
                 windowsSet) {
-            Driver.switchTo().window(tab);
-            Driver.close();
+            driver.switchTo().window(tab);
+            driver.close();
         }
     }
 
     @Test
-    public void TestMethod(){
-        MainMenu menuPage = new MainMenu(Driver);
-        menuPage.ClickToMenu("Страхование");
-        menuPage.ClickToSubMenu("Путешествия и покупки");
+    @Title("Страхование путешественников")
+    public void testMethod(){
 
-        Set<String> oldTabs = Driver.getWindowHandles();
+        mainSteps.stepSelectMainMenu("Страхование");
+        mainSteps.stepSelectSubMenu("Путешествия и покупки");
 
-        TravelShopping travelShoppingPage = new TravelShopping(Driver);
-        travelShoppingPage.CheckExistInsuranceLabel();
-        travelShoppingPage.ClickToCheckoutOnlineButton();
+        Set<String> oldTabs = driver.getWindowHandles();
+
+        travelShoppingSteps.stepCheckInsuranceLabel();
+        travelShoppingSteps.stepCheckoutOnline();
 
         try
         {
-            String newTab = WaitNewTab(Driver, oldTabs, 20 );
-            Driver.switchTo().window(newTab);
+            String newTab = waitNewTab(oldTabs, 20 );
+            driver.switchTo().window(newTab);
         }
         catch (Exception ex)
         {
             Assert.fail(ex.getMessage());
         }
 
-        TravelInsurance travelInsurance = new TravelInsurance(Driver);
+        tISelectPolicySteps.stepWaitToAppearanceLabel();
+        tISelectPolicySteps.stepSelectAmountInsurance("Минимальная");
+        tISelectPolicySteps.stepClickRegistration();
 
-        travelInsurance.SelectPolicyTab.WaitToAppearanceLabel();
-        travelInsurance.SelectPolicyTab.SelectAmountInsurance("Минимальная");
-        travelInsurance.SelectPolicyTab.ClickRegistrationButton();
+        tIRegistrationSteps.stepFillField(InsuredData.Surname,"Surname");
+        tIRegistrationSteps.stepFillField(InsuredData.Name,"Name");
+        tIRegistrationSteps.stepFillField(InsuredData.BirthDate,"01.01.2000");
 
-        travelInsurance.RegistrationTab.FillField(InsuredData.Surname,"Surname");
-        travelInsurance.RegistrationTab.FillField(InsuredData.Name,"Name");
-        travelInsurance.RegistrationTab.FillField(InsuredData.BirthDate,"01.01.2000");
+        tIRegistrationSteps.stepFillField(PersonalData.Surname,"Фамилия");
+        tIRegistrationSteps.stepFillField(PersonalData.Name,"Имя");
+        tIRegistrationSteps.stepFillField(PersonalData.Middlename,"Отчество");
+        tIRegistrationSteps.stepFillField(PersonalData.BirthDate,"01.01.2000");
+        tIRegistrationSteps.stepFillField(Gender.Male);
 
-        travelInsurance.RegistrationTab.FillField(PersonalData.Surname,"Фамилия");
-        travelInsurance.RegistrationTab.FillField(PersonalData.Name,"Имя");
-        travelInsurance.RegistrationTab.FillField(PersonalData.Middlename,"Отчество");
-        travelInsurance.RegistrationTab.FillField(PersonalData.BirthDate,"01.01.2000");
-        travelInsurance.RegistrationTab.SelectGender(Gender.Male);
+        tIRegistrationSteps.stepFillField(PersonalData.PassportSeries,"1111");
+        tIRegistrationSteps.stepFillField(PersonalData.PassportNumber,"111111");
+        tIRegistrationSteps.stepFillField(PersonalData.PassportIssueDate,"01.01.2014");
+        tIRegistrationSteps.stepFillField(PersonalData.PassportIssuePlace,"Кем выдан");
 
-        travelInsurance.RegistrationTab.FillField(PersonalData.PassportSeries,"1111");
-        travelInsurance.RegistrationTab.FillField(PersonalData.PassportNumber,"111111");
-        travelInsurance.RegistrationTab.FillField(PersonalData.PassportIssueDate,"01.01.2014");
-        travelInsurance.RegistrationTab.FillField(PersonalData.PassportIssuePlace,"Кем выдан");
+        tIRegistrationSteps.stepCheckFields();
 
-        travelInsurance.RegistrationTab.CheckFields();
+        tIRegistrationSteps.stepClickToNext();
 
-        travelInsurance.RegistrationTab.ClickToNext();
+        tIRegistrationSteps.stepCheckFields();
 
-        travelInsurance.RegistrationTab.CheckFields();
-
-        travelInsurance.RegistrationTab.CheckWarning();
+        tIRegistrationSteps.stepCheckWarning();
     }
 }

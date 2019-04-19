@@ -1,4 +1,4 @@
-package Pages;
+package pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,7 +18,7 @@ public class TravelShopping extends MainMenu {
         super(driver);
     }
 
-    public void CheckExistInsuranceLabel(){
+    public void checkExistInsuranceLabel(){
         try {
             insuranceLabel.isDisplayed();
         }
@@ -27,7 +27,7 @@ public class TravelShopping extends MainMenu {
         }
     }
 
-    public void ClickToCheckoutOnlineButton(){
+    public void clickToCheckoutOnlineButton(){
         checkoutOnlineButton.click();
     }
 

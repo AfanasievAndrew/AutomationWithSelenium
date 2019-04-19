@@ -1,4 +1,4 @@
-package Enums;
+package enums;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,5 +27,9 @@ public enum InsuredData {
 
     public static InsuredData valueOf(int insuredType) {
         return (InsuredData) map.get(insuredType);
+    }
+
+    public static boolean isFromEnum(int insuredType) {
+        return map.containsKey(insuredType);
     }
 }

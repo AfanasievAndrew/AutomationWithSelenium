@@ -1,8 +1,8 @@
-package Pages;
+package pages;
 
-import Enums.Gender;
-import Enums.InsuredData;
-import Enums.PersonalData;
+import enums.Gender;
+import enums.InsuredData;
+import enums.PersonalData;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -38,17 +38,17 @@ public class TravelInsurance {
             super(driver);
         }
 
-        public void WaitToAppearanceLabel(){
+        public void waitToAppearanceLabel(){
             Wait<WebDriver> wait = new WebDriverWait(driver,10,1000);
 
             wait.until(ExpectedConditions.visibilityOf(tabLabel));
         }
 
-        public void SelectAmountInsurance(String value){
+        public void selectAmountInsurance(String value){
             driver.findElement(By.xpath("//div[contains(text(),'"+value+"')]/parent::div")).click();
         }
 
-        public void ClickRegistrationButton(){
+        public void clickRegistrationButton(){
             registrationButton.click();
         }
     }
@@ -94,15 +94,15 @@ public class TravelInsurance {
             super(driver);
         }
 
-        public void ClickToNext(){
+        public void clickToNext(){
             nextButton.click();
         }
 
-        public void CheckWarning(){
+        public void checkWarning(){
             warningLabel.isDisplayed();
         }
 
-        public void SelectGender(Gender value){
+        public void selectGender(Gender value){
 
             switch (value) {
                 case Male:
@@ -114,46 +114,54 @@ public class TravelInsurance {
             }
         }
 
-        public void FillField(PersonalData field, String content){
+        public void fillField(PersonalData field, String content){
 
             switch (field){
                 case Surname:
                 {
+                    surname.clear();
                     surname.sendKeys(content);
                     break;
                 }
                 case Name:
                 {
+                    name.clear();
                     name.sendKeys(content);
                     break;
                 }
                 case Middlename:
                 {
+                    middlename.clear();
                     middlename.sendKeys(content);
                     break;
                 }
                 case BirthDate:
                 {
+                    birthDate.clear();
                     birthDate.sendKeys(content);
                     break;
                 }
                 case PassportSeries:
                 {
+                    passportSeries.clear();
                     passportSeries.sendKeys(content);
                     break;
                 }
                 case PassportNumber:
                 {
+                    passportNumber.clear();
                     passportNumber.sendKeys(content);
                     break;
                 }
                 case PassportIssueDate:
                 {
+                    issueDate.clear();
                     issueDate.sendKeys(content);
                     break;
                 }
                 case PassportIssuePlace:
                 {
+                    issuePlace.clear();
                     issuePlace.sendKeys(content);
                     break;
                 }
@@ -166,21 +174,24 @@ public class TravelInsurance {
             }
         }
 
-        public void FillField(InsuredData field, String content){
+        public void fillField(InsuredData field, String content){
 
             switch (field){
                 case Surname:
                 {
+                    insuredSurname.clear();
                     insuredSurname.sendKeys(content);
                     break;
                 }
                 case Name:
                 {
+                    insuredName.clear();
                     insuredName.sendKeys(content);
                     break;
                 }
                 case BirthDate:
                 {
+                    insuredBirthDate.clear();
                     insuredBirthDate.sendKeys(content);
                     break;
                 }
@@ -193,25 +204,24 @@ public class TravelInsurance {
             }
         }
         
-        public void CheckFields(){
+        public void checkFields(){
 
             for (Map.Entry<Integer, String> entry :
                     fieldValues.entrySet()) {
                 Integer mapKey = entry.getKey();
                 String mapValue = entry.getValue();
 
-                PersonalData personalData = PersonalData.valueOf(mapKey);
-
-                if(personalData != null){
-                    CheckPersonalDataFields(personalData, mapValue);
-                } else {
+                if(PersonalData.isFromEnum(mapKey)){
+                    PersonalData personalData = PersonalData.valueOf(mapKey);
+                    checkPersonalDataFields(personalData, mapValue);
+                }else{
                     InsuredData insuredData = InsuredData.valueOf(mapKey);
-                    CheckInsuredDataFields(insuredData, mapValue);
+                    checkInsuredDataFields(insuredData, mapValue);
                 }
             }
         }
 
-        private void CheckPersonalDataFields(PersonalData mapKey, String mapValue){
+        private void checkPersonalDataFields(PersonalData mapKey, String mapValue){
             String realValue = "";
 
             switch (mapKey){
@@ -260,7 +270,7 @@ public class TravelInsurance {
             Assert.assertEquals("Wrong value in element " + mapKey , realValue, mapValue);
         }
 
-        private void CheckInsuredDataFields(InsuredData mapKey, String mapValue){
+        private void checkInsuredDataFields(InsuredData mapKey, String mapValue){
             String realValue = "";
 
             switch (mapKey){

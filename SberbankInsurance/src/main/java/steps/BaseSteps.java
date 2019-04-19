@@ -1,8 +1,14 @@
+package steps;
+
+import util.TestProperties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import ru.yandex.qatools.allure.annotations.Attachment;
 
 import java.util.Date;
 import java.util.Properties;
@@ -10,37 +16,37 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class BaseTest {
+public class BaseSteps {
 
-    protected static Properties Properties = TestProperties.getInstance().getProperties();
+    protected static Properties properties = TestProperties.getInstance().getProperties();
 
-    protected static WebDriver Driver;
+    protected static WebDriver driver;
 
     @BeforeClass
-    public static void ClassSetUp(){
-        Driver = LoadDriver(Properties.getProperty("browser"));
-        Driver.manage().timeouts().pageLoadTimeout(
-                Long.parseLong(Properties.getProperty("pageLoadTimeout")), TimeUnit.SECONDS);
-        Driver.manage().timeouts().implicitlyWait(
-                Long.parseLong(Properties.getProperty("implicitlyWait")), TimeUnit.SECONDS);
+    public static void classSetUp(){
+        driver = loadDriver(properties.getProperty("browser"));
+        driver.manage().timeouts().pageLoadTimeout(
+                Long.parseLong(properties.getProperty("pageLoadTimeout")), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(
+                Long.parseLong(properties.getProperty("implicitlyWait")), TimeUnit.SECONDS);
     }
 
-    private static WebDriver LoadDriver(String browserName){
+    private static WebDriver loadDriver(String browserName){
         WebDriver driver;
 
         switch (browserName){
             case "firefox":{
-                System.setProperty("webdriver.gecko.driver", Properties.getProperty("webdriver.gecko.driver"));
+                System.setProperty("webdriver.gecko.driver", properties.getProperty("webdriver.gecko.driver"));
                 driver = new FirefoxDriver();
                 break;
             }
             case "chrome":{
-                System.setProperty("webdriver.chrome.driver", Properties.getProperty("webdriver.chrome.driver"));
+                System.setProperty("webdriver.chrome.driver", properties.getProperty("webdriver.chrome.driver"));
                 driver = new ChromeDriver();
                 break;
             }
             default:{
-                System.setProperty("webdriver.chrome.driver", Properties.getProperty("webdriver.chrome.driver"));
+                System.setProperty("webdriver.chrome.driver", properties.getProperty("webdriver.chrome.driver"));
                 driver = new ChromeDriver();
             }
         }
@@ -48,11 +54,11 @@ public class BaseTest {
     }
 
     @AfterClass
-    public static void ClassTearDown(){
-        Driver.quit();
+    public static void classTearDown(){
+        driver.quit();
     }
 
-    protected String WaitNewTab(WebDriver driver, Set<String> oldTabs, int timeoutSeconds) throws TimeoutException {
+    protected String waitNewTab(Set<String> oldTabs, int timeoutSeconds) throws TimeoutException {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
         long timeoutMilliseconds = timeoutSeconds*60*1000;
@@ -77,5 +83,10 @@ public class BaseTest {
         }
 
         return newTab;
+    }
+
+    @Attachment(type = "image/png", value = "Screenshot")
+    public static byte[] takeScreenshot() {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 }

@@ -1,4 +1,4 @@
-package Enums;
+package enums;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,5 +32,9 @@ public enum PersonalData{
 
     public static PersonalData valueOf(int personalType) {
         return (PersonalData) map.get(personalType);
+    }
+
+    public static boolean isFromEnum(int personalType) {
+        return map.containsKey(personalType);
     }
 }
