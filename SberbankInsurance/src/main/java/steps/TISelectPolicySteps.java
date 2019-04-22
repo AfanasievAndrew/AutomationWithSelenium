@@ -3,9 +3,9 @@ package steps;
 import pages.TravelInsurance;
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class TISelectPolicySteps extends BaseSteps {
+public class TISelectPolicySteps {
 
-    private TravelInsurance travelInsurancePage = new TravelInsurance(driver);
+    private TravelInsurance travelInsurancePage = new TravelInsurance();
 
     @Step("выполнено ожидание загрузки страницы")
     public void stepWaitToAppearanceLabel(){

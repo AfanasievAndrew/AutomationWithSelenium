@@ -1,5 +1,7 @@
 package steps;
 
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import util.TestProperties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -22,13 +24,20 @@ public class BaseSteps {
 
     protected static WebDriver driver;
 
-    @BeforeClass
+    protected static String baseUrl;
+
+    @Before
     public static void classSetUp(){
         driver = loadDriver(properties.getProperty("browser"));
         driver.manage().timeouts().pageLoadTimeout(
                 Long.parseLong(properties.getProperty("pageLoadTimeout")), TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(
                 Long.parseLong(properties.getProperty("implicitlyWait")), TimeUnit.SECONDS);
+
+        baseUrl = properties.getProperty("app.url");
+        System.out.println(baseUrl);
+        driver.manage().window().maximize();
+        driver.get(baseUrl);
     }
 
     private static WebDriver loadDriver(String browserName){
@@ -53,12 +62,12 @@ public class BaseSteps {
         return driver;
     }
 
-    @AfterClass
+    @After
     public static void classTearDown(){
         driver.quit();
     }
 
-    protected String waitNewTab(Set<String> oldTabs, int timeoutSeconds) throws TimeoutException {
+    protected static String waitNewTab(Set<String> oldTabs, int timeoutSeconds) throws TimeoutException {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
         long timeoutMilliseconds = timeoutSeconds*60*1000;
@@ -85,8 +94,5 @@ public class BaseSteps {
         return newTab;
     }
 
-    @Attachment(type = "image/png", value = "Screenshot")
-    public static byte[] takeScreenshot() {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-    }
+    public static WebDriver getDriver(){return driver;}
 }

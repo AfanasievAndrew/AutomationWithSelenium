@@ -3,9 +3,9 @@ package steps;
 import pages.MainMenu;
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class MainSteps extends BaseSteps{
+public class MainSteps {
 
-    private MainMenu mainMenuPage = new MainMenu(driver);
+    private MainMenu mainMenuPage = new MainMenu();
 
     @Step("выбран пункт меню {0}")
     public void stepSelectMainMenu(String value){

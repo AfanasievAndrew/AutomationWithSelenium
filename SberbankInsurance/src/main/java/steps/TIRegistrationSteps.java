@@ -5,9 +5,9 @@ import enums.PersonalData;
 import pages.TravelInsurance;
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class TIRegistrationSteps extends BaseSteps {
+public class TIRegistrationSteps {
 
-    private TravelInsurance travelInsurancePage = new TravelInsurance(driver);
+    private TravelInsurance travelInsurancePage = new TravelInsurance();
 
     @Step("заполнено поле {0} значением {1}")
     public void stepFillField(InsuredData fieldType, String content){
@@ -29,9 +29,9 @@ public class TIRegistrationSteps extends BaseSteps {
         travelInsurancePage.RegistrationTab.checkFields();
     }
 
-    @Step("выполнена проверка на предупреждающее сообщение")
-    public void stepCheckWarning(){
-        travelInsurancePage.RegistrationTab.checkWarning();
+    @Step("выполнена проверка на предупреждающее сообщение {0}")
+    public void stepCheckWarning(String warning){
+        travelInsurancePage.RegistrationTab.checkWarning(warning);
     }
 
     @Step("выполнено нажатие на кнопку Продолжить")

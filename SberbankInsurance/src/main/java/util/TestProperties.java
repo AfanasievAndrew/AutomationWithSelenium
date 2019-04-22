@@ -11,6 +11,8 @@ public class TestProperties {
     private static TestProperties INSTANCE = null;
 
     private TestProperties(){
+        //TODO: remove
+        System.setProperty("environment","environment");
         try {
             properties.load(new FileInputStream(new File("./" + System.getProperty("environment") + ".properties")));
         } catch (IOException e) {

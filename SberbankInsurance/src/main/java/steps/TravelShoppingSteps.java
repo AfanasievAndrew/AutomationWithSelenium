@@ -3,9 +3,9 @@ package steps;
 import pages.TravelShopping;
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class TravelShoppingSteps extends BaseSteps {
+public class TravelShoppingSteps {
 
-    private TravelShopping travelShoppingPage = new TravelShopping(driver);
+    private TravelShopping travelShoppingPage = new TravelShopping();
 
     @Step("проверен label на новой странице")
     public void stepCheckInsuranceLabel(){

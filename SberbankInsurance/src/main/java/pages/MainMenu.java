@@ -9,8 +9,8 @@ public class MainMenu extends BasePage{
     @FindBy(xpath = "//ul[contains(@class,'lg-menu__list')]")
     private WebElement menuItems;
 
-    public MainMenu(WebDriver driver) {
-        super(driver);
+    public MainMenu(){
+        super();
     }
 
     public void clickToMenu(String itemName){

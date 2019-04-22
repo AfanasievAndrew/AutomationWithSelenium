@@ -21,9 +21,9 @@ public class TravelInsurance {
 
     public RegistrationTab RegistrationTab;
 
-    public TravelInsurance(WebDriver driver){
-        SelectPolicyTab = new SelectPolicyTab(driver);
-        RegistrationTab = new RegistrationTab(driver);
+    public TravelInsurance(){
+        SelectPolicyTab = new SelectPolicyTab();
+        RegistrationTab = new RegistrationTab();
     }
 
     public class SelectPolicyTab extends BasePage
@@ -34,8 +34,8 @@ public class TravelInsurance {
         @FindBy(xpath = "//form//*[text()='Оформить']")
         private WebElement registrationButton;
 
-        public SelectPolicyTab(WebDriver driver) {
-            super(driver);
+        public SelectPolicyTab() {
+            super();
         }
 
         public void waitToAppearanceLabel(){
@@ -82,24 +82,23 @@ public class TravelInsurance {
         @FindBy(xpath = "//*[text()='Продолжить']")
         private WebElement nextButton;
 
-        @FindBy (xpath = "//div[contains(@class,'form-error-message')]"
-                + "/child::div[text()='"
-                + "Заполнены не все обязательные поля"
-                + "'][not (contains(@class,'ng-hide'))]")
         private WebElement warningLabel;
 
         private Map<Integer, String> fieldValues = new HashMap<Integer, String>();
 
-        public RegistrationTab(WebDriver driver) {
-            super(driver);
+        public RegistrationTab() {
+            super();
         }
 
         public void clickToNext(){
             nextButton.click();
         }
 
-        public void checkWarning(){
-            warningLabel.isDisplayed();
+        public void checkWarning(String warning){
+            driver.findElement(By.xpath("//div[contains(@class,'form-error-message')]"
+                    + "/child::div[text()='"
+                    + warning
+                    + "'][not (contains(@class,'ng-hide'))]")).isDisplayed();
         }
 
         public void selectGender(Gender value){

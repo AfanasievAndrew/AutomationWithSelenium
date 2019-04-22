@@ -14,8 +14,8 @@ public class TravelShopping extends MainMenu {
             "/ancestor::div[contains(@class,'bp-container')][position() = 1]//a[text()='Оформить онлайн']")
     private WebElement checkoutOnlineButton;
 
-    public TravelShopping(WebDriver driver) {
-        super(driver);
+    public TravelShopping() {
+        super();
     }
 
     public void checkExistInsuranceLabel(){
